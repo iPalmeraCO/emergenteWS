@@ -17,12 +17,16 @@
 //Route::resource('user','UserController');
 
 
-// excluye rutas
-Route::get('user/{id}/{name}', 'UserController@show');
-
 Route::resource('user', 'UserController',
                 ['only' => ['index', 'store', 'update', 'destroy', 'show']]);
 
+
+// excluye rutas
+
+
+//Route::post('user','UserController@store');
+
+Route::get('user/{mail}/{pwd}', 'UserController@show');
 
 Route::get('/', function () {
     return view('welcome');

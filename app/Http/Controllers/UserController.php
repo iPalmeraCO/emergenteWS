@@ -41,7 +41,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $usu                = new User;
+      $usu->usua_nombre   = $request->get('usua_nombre');
+      $usu->usua_login    = $request->get('usua_login');
+      $usu->usua_password = bcrypt($request->get('usua_password'));
+      $usu->tipoUsuario   = $request->get('tipoUsuario');
+      $usu->email         = $request->get('email');
+
+      $usu->save();
+      return "true";
     }
 
     /**
@@ -52,7 +60,8 @@ class UserController extends Controller
      */
     public function show($usua_login =null,$pwd = null)
     {
-        $res = User::where('usua_login',$usua_login)
+        // dd("prueba");
+        $res = User::where('email',$usua_login)
         ->where('usua_password',$pwd)->firstOrFail();
 
         $p = array();

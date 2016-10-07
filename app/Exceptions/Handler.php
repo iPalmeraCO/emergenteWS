@@ -53,6 +53,26 @@ class Handler extends ExceptionHandler
         }
 
 
+        if(strpos($e->getMessage(),'SQLSTATE[23000') == 0)
+        {
+
+          $e = new NotFoundHttpException($e->getMessage(), $e);
+            return \Response::json(['error' => 'Email  duplicado'], 404);
+        }
+         // dd($e);
+        // if($e instanceof Exception)
+        // {
+
+        //     //dd($e->getMessage());
+        //     //dd(strpos($e->getMessage(),'SQL'));
+        //     if(strpos($e->getMessage(),'SQLSTATE[23000') == 0){
+        //     dd($e);
+        //     $e = new NotFoundHttpException($e->getMessage(), $e);
+        //     return \Response::json(['error' => 'Email Duplicado o login duplicado'], 404);
+        //     }
+
+        // }
+
         return parent::render($request, $e);
     }
 }
