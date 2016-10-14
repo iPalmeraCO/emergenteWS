@@ -47,17 +47,26 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
             return \Response::json(['error' => 'Model not found'], 404);
         }
 
 
-        if(strpos($e->getMessage(),'SQLSTATE[23000') == 0)
+        if(strpos($e->getMessage(),'SQLSTATE[23000]') === 0)
         {
-
+           //var_dump($e->getMessage()); die();
+            //$patron = "SQL";
+           //ar_dump(strpos($e->getMessage(),'SQLSTATE[23000')); die();
           $e = new NotFoundHttpException($e->getMessage(), $e);
             return \Response::json(['error' => 'Email  duplicado'], 404);
+        }
+
+
+        if($e instanceof MethodNotAllowedHttpException){
+            $e = new NotFoundHttpException($e->getMessage(), $e);
+            return \Response::json(['error' => 'NotFoundException'], 404);
         }
          // dd($e);
         // if($e instanceof Exception)

@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-
-
 use App\User;
+use Mail;
 
-class UserController extends Controller
+
+class EmailController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,8 +29,6 @@ class UserController extends Controller
     public function create()
     {
         //
-        User::create($request->all());
-        return ['created' => true];
     }
 
     /**
@@ -41,16 +39,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-      $usu                = new User;
-      $usu->usua_nombre   = $request->get('usua_nombre');
-      $usu->usua_login    = $request->get('usua_login');
-      $usu->usua_password = bcrypt($request->get('usua_password'));
-      $usu->tipoUsuario   = $request->get('tipoUsuario');
-      $usu->email         = $request->get('email');
-      $usu->tipoUsuario   = $request->get('tipoUsuario');
+        //
 
-      $usu->save();
-      return "true";
     }
 
     /**
@@ -59,15 +49,27 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($usua_login =null,$pwd = null)
+    public function show($email)
     {
-        // dd("prueba");
-        $res = User::where('email',$usua_login)
-        ->where('usua_password',$pwd)->firstOrFail();
+      $res = User::where('email',$email)->firstOrFail();
+      $res->usua_password = self::randomPassword();
+        //se genera un string random
+      $data = array(
+                    'name' => $res->usua_nombre,
+                    'pwd'  => $res->usua_password
+                     );
 
-        $p = array();
-        array_push($p,$res);
-        return $p;
+      // envio de mail para asignacion de contraseña
+      Mail::send(['html'=>'mail'], $data, function($message) use ($res){
+         $message->to($res->email,$res->usua_nombre)->subject
+            ('Recuperacion de Contraseña');
+         $message->from('robotmanus@gmail.com','Administrador');
+      });
+
+      $res->usua_password = md5($res->usua_password);
+      $res->save();
+
+      return "true";
     }
 
     /**
@@ -91,9 +93,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::find($id);
-        $user->update($request->all());
-        return ['updated' => true];
     }
 
     /**
@@ -105,7 +104,19 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-          User::destroy($id);
-        return ['deleted' => true];
     }
+
+   /*
+   * Genera un password aleatorio para el usuario
+   */
+   static function randomPassword() {
+    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+    $pass = array(); //remember to declare $pass as an array
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 8; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+    }
+    return implode($pass); //turn the array into a string
+}
 }
