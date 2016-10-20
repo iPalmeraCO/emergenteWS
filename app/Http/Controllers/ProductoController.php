@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests;
+use App\Producto;
 
-
-use App\User;
-
-class UserController extends Controller
+class ProductoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,6 +18,8 @@ class UserController extends Controller
     public function index()
     {
         //
+        $user = DB::table('producto')->get();
+        return $user;
     }
 
     /**
@@ -29,8 +30,6 @@ class UserController extends Controller
     public function create()
     {
         //
-        User::create($request->all());
-        return ['created' => true];
     }
 
     /**
@@ -41,16 +40,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-      $usu                = new User;
-      $usu->usua_nombre   = $request->get('usua_nombre');
-      $usu->usua_login    = $request->get('usua_login');
-      $usu->usua_password = bcrypt($request->get('usua_password'));
-      $usu->tipoUsuario   = $request->get('tipoUsuario');
-      $usu->email         = $request->get('email');
-      $usu->tipoUsuario   = $request->get('tipoUsuario');
-
-      $usu->save();
-      return "true";
+        //
     }
 
     /**
@@ -59,14 +49,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($usua_login =null,$pwd = null)
+    public function show($id)
     {
-        $res = User::where('email',$usua_login)
-        ->where('usua_password',$pwd)->firstOrFail();
-
-        $p = array();
-        array_push($p,$res);
-        return $p;
+        //
     }
 
     /**
@@ -90,9 +75,6 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = User::find($id);
-        $user->update($request->all());
-        return ['updated' => true];
     }
 
     /**
@@ -104,7 +86,5 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-          User::destroy($id);
-        return ['deleted' => true];
     }
 }

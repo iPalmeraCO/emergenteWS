@@ -16,6 +16,9 @@
 
 //Route::resource('user','UserController');
 
+
+
+
 Route::resource('user', 'UserController',
                 ['only' => ['index', 'store', 'update', 'destroy', 'show']]);
 
@@ -33,3 +36,8 @@ Route::resource('email','EmailController',['only' => ['index', 'store', 'update'
 Route::get('/p', function () {
     return view('welcome');
 });
+
+
+Route::resource('categoria','CategoriaController',['only' => ['index', 'store', 'update', 'destroy', 'show']]);
+
+Route::resource('producto','ProductoController',['only' => ['index', 'store', 'update', 'destroy', 'show']]);
