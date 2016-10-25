@@ -52,3 +52,6 @@ Route::resource('producto','ProductoController',['only' => ['index', 'store', 'u
 
 
 Route::resource('contacto','ContactoController',['only' => ['index', 'store', 'update', 'destroy', 'show']]);
+
+Route::resource('evento','EventoController',['only' => ['index', 'store', 'update', 'destroy', 'show']]);
+
