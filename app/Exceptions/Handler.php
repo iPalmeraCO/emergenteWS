@@ -60,7 +60,7 @@ class Handler extends ExceptionHandler
             //$patron = "SQL";
            //ar_dump(strpos($e->getMessage(),'SQLSTATE[23000')); die();
           $e = new NotFoundHttpException($e->getMessage(), $e);
-            return \Response::json(['error' => 'Email  duplicado'], 404);
+            return \Response::json(['error' => 'Email  duplicado o dato nullo'], 404);
         }
 
 

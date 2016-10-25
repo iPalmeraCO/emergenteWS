@@ -16,7 +16,15 @@
 
 //Route::resource('user','UserController');
 
+// Route::group(['middleware' => 'auth'], function () {
+//     Route::get('/', function ()    {
+//         // Uses Auth Middleware
+//     });
 
+//     Route::get('user/profile', function () {
+//         // Uses Auth Middleware
+//     });
+// });
 
 
 Route::resource('user', 'UserController',
@@ -41,3 +49,6 @@ Route::get('/p', function () {
 Route::resource('categoria','CategoriaController',['only' => ['index', 'store', 'update', 'destroy', 'show']]);
 
 Route::resource('producto','ProductoController',['only' => ['index', 'store', 'update', 'destroy', 'show']]);
+
+
+Route::resource('contacto','ContactoController',['only' => ['index', 'store', 'update', 'destroy', 'show']]);

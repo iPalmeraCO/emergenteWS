@@ -5,19 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Categoria;
+use App\Contacto;
+use Mail;
 
-class CategoriaController extends Controller
+class ContactoController extends Controller
 {
     /**
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         //
-        // $user = Categoria::find(1);
-        // dd($user);
+       //
     }
 
     /**
@@ -27,8 +28,10 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-
         //
+
+        //dd("prueba_create");
+
     }
 
     /**
@@ -39,8 +42,30 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        // dd("guardar");
         //
+         //dd("prueba_create_guardar");
+
+        $con             = new Contacto;
+        $con->nombre     = $request->get('nombre');
+        $con->comentario = $request->get('comentario');
+        $con->correo     = $request->get('correo');
+        $con->save();
+
+        // envio email Adminitrador
+        $data = array(
+                    'nombre'      => $request->get('nombre'),
+                    'comentario'  => $request->get('comentario'),
+                    'correo'      => $request->get('correo')
+                     );
+
+         Mail::send(['html'=>'admin'], $data, function($message) {
+         $message->to('robotmanus@gmail.com','administrador')->subject
+            ('Informacion de Nuevo Contacto');
+         $message->from('robotmanus@gmail.com','Administrador');
+      });
+
+
+        return "true";
     }
 
     /**
@@ -51,7 +76,6 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-
         //
     }
 
