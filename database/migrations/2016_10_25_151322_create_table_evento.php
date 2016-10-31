@@ -16,7 +16,7 @@ class CreateTableEvento extends Migration
             $table->increments('id');
             $table->string('titulo');
             $table->string('descripcion');
-            $table->string('fecha');
+            $table->date('fecha');
             $table->string('sede');
             $table->string('costo');
             $table->timestamps();
